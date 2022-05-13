@@ -98,16 +98,6 @@ def make_select_message():
                         "type": "postback",
                         "data": "当BOTはカゴメとは無関係です。",
                         "label": "カゴメから何かもらってるんですか？"
-                    },
-                    {
-                        "type": "postback",
-                        "data": "混ぜればいいと思います。",
-                        "label": "フライドポテトにはケチャップとマヨネーズどちらがいいと思いますか？"
-                    },
-                    {
-                        "type": "postback",
-                        "data": "感じてください。",
-                        "label": "このbot、何に使うんですか？"
                     }
                 ]
             )
