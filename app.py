@@ -93,8 +93,6 @@ def handle_message(event):
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
-    msg = event.message.text
-
     res = random.randint(0,1)
 
     if res == 0:
