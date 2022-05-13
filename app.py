@@ -72,7 +72,7 @@ def make_select_message():
                 text="下から該当するものを選んでください。",
                 actions=[{
                         "type": "postback",
-                        "data": question_A.replace('\n', ''),
+                        "data": f"Q:{question_Q}\nA:{question_A} ".replace(' \n', ' '),
                         "label": question_Q} for question_Q, question_A in questions.items()
                 ]
             )
