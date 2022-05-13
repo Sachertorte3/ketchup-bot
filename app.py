@@ -1,5 +1,4 @@
-import os
-import random
+import os, random
 from flask import Flask, request, abort
 
 from linebot import LineBotApi, WebhookHandler
@@ -21,7 +20,6 @@ YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
-
 
 @app.route("/callback", methods=["POST"])
 def callback():
@@ -51,48 +49,81 @@ def handle_message(event):
         line_bot_api.reply_message(event.reply_token, make_select_message())
     else:
         ret_msg = "ケチャップ画像を送って欲しいぜ"
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text=ret_msg))
-
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
 @handler.add(PostbackEvent)
 def on_postback(line_event):
     data = line_event.postback.data
-
-    line_bot_api.reply_message(
-        line_event.reply_token, TextSendMessage(f"{data}"))
+    
+    line_bot_api.reply_message(line_event.reply_token, TextSendMessage(data))
 
 
 def make_select_message():
-    with open('questions.txt', encoding="utf-8") as f:
-        lines = f.readlines()
-        questions = {}
-        for line in lines:
-            questions[line.split(',')[0]] = line.split(',')[1]
-        actions = []
-        for question_Q, question_A in questions.items():
-            actions.append({"type": "postback", "data": f"Q:{question_Q}\nA:{question_A}", "label": f"{question_Q}"})
+    questions = {}
+    with open('questions.txt') as f:
+        line = f.readline()
+        questions[line.split(',')[0]] = line.split(',')[1]
         return TemplateSendMessage(
             alt_text="選択肢",
             template=ButtonsTemplate(
                 title="よくある質問",
                 text="下から該当するものを選んでください。",
-                actions=actions
+                actions=[
+                    {
+                        "type": "postback",
+                        "data": "祈祷力が足りません。",
+                        "label": "動かない、返信がこない"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "ケチャップがまだあるのになくなったと表示される",
+                        "label": "それは本当にケチャップですか？トマトジュースと間違えていませんか？"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "絞り出してください。",
+                        "label": "ケチャップがまだあると言われたが出てこない"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "いじめないでください。",
+                        "label": "同じ写真なのに送信するたびに結果が変わる"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "いじめないでください。",
+                        "label": "ケチャップ以外の画像を送信しても反応する"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "当BOTはカゴメとは無関係です。",
+                        "label": "カゴメから何かもらってるんですか？"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "混ぜればいいと思います。",
+                        "label": "フライドポテトにはケチャップとマヨネーズどちらがいいと思いますか？"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "感じてください。",
+                        "label": "このbot、何に使うんですか？"
+                    }
+                ]
             )
-        )
+    )
+
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
-    res = random.randint(0, 1)
+    res = random.randint(0,1)
 
     if res == 0:
         ret_msg = "大丈夫、まだイケるって"
     elif res == 1:
         ret_msg = "残念ですが、そのケチャップはもう空っぽですね\nhttps://www.amazon.co.jp/-/en/2803/dp/B00H2DC9MU\n新しいのを買いましょう！"
 
-    line_bot_api.reply_message(
-        event.reply_token, TextSendMessage(text=ret_msg))
-
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
 if __name__ == "__main__":
     app.run()
