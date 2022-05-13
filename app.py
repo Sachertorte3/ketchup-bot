@@ -73,7 +73,7 @@ def make_select_message():
                 actions=[{
                         "type": "postback",
                         "data": question_A,
-                        "label": "question_Q"} for question_Q, question_A in questions.items()
+                        "label": question_Q} for question_Q, question_A in questions.items()
                 ]
             )
     )
