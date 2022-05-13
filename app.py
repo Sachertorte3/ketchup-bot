@@ -71,7 +71,8 @@ def make_select_message():
             questions[line.split(',')[0]] = line.split(',')[1]
         actions = []
         for question_Q, question_A in questions.items():
-            actions.append({"type": "postback", "data": f"Q:{question_Q}\nA:{question_A}", "label": question_Q})
+            actions.append({
+                "type": "postback", "data": "A", "label": "B"})
         return TemplateSendMessage(
             alt_text="選択肢",
             template=ButtonsTemplate(
