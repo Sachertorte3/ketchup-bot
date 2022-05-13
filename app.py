@@ -61,7 +61,7 @@ def on_postback(line_event):
 def make_select_message():
     questions = {}
     with open('questions.txt') as f:
-        line = f.readline()
+        line = f.readlines()
         questions[line.split(',')[0]] = line.split(',')[1]
         return TemplateSendMessage(
             alt_text="選択肢",
@@ -71,7 +71,7 @@ def make_select_message():
                 actions=[{
                         "type": "postback",
                         "data": question_A,
-                        "label": "SA"} for question_Q, question_A in questions.items()
+                        "label": "question_Q"} for question_Q, question_A in questions.items()
                 ]
             )
     )
