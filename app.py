@@ -6,6 +6,7 @@ from linebot.exceptions import InvalidSignatureError
 from linebot.models import (
     MessageEvent,
     TextMessage,
+    ImageMessage,
     TextSendMessage,
 )
 
@@ -107,6 +108,18 @@ def handle_message(event):
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
+@handler.add(MessageEvent, message=ImageMessage)
+def handle_message(event):
+    msg = event.message.text
+
+    res = random.randint(0,1)
+
+    if res == 0:
+        ret_msg += "大丈夫、まだイケるって"
+    elif res == 1:
+        ret_msg += "残念ですが、そのケチャップはもう空っぽですね\nhttps://www.amazon.co.jp/-/en/2803/dp/B00H2DC9MU\n新しいのを買いましょう！"
+
+    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
 if __name__ == "__main__":
     app.run()
