@@ -59,45 +59,22 @@ def on_postback(line_event):
 
 
 def make_select_message():
-    return TemplateSendMessage(
-        alt_text="選択肢",
-        template=ButtonsTemplate(
-            title="よくある質問",
-            text="下から該当するものを選んでください。",
-            actions=[
-                {
-                    "type": "postback",
-                    "data": "祈祷力が足りません。",
-                    "label": "動かない、返信がこない"
-                },
-                {
-                    "type": "postback",
-                    "data": "それは本当にケチャップですか？トマトジュースと間違えていませんか？",
-                    "label": "ケチャップがまだあるのになくなったと表示される"
-                },
-                {
-                    "type": "postback",                        "data": "絞り出してください。",
-                    "label": "ケチャップがまだあると言われたが出てこない"
-                },
-                {
-                    "type": "postback",
-                    "data": "いじめないでください。",
-                    "label": "同じ写真なのに送信するたびに結果が変わる"
-                },
-                {
-                    "type": "postback",
-                    "data": "いじめないでください。",
-                    "label": "ケチャップ以外の画像を送信しても反応する"
-                },
-                {
-                    "type": "postback",
-                    "data": "当BOTはカゴメとは無関係です。",
-                    "label": "カゴメから何かもらってるんですか？"
-                }
-            ]
-        )
+    questions = {}
+    with open('questions.txt') as f:
+        line = f.readline()
+        questions[line.split(',')[0]] = line.split(',')[1]
+        return TemplateSendMessage(
+            alt_text="選択肢",
+            template=ButtonsTemplate(
+                title="よくある質問",
+                text="下から該当するものを選んでください。",
+                actions=[{
+                        "type": "postback",
+                        "data": questions_A,
+                        "label": questions_Q} for questions_Q, questions_A in questions.items()
+                ]
+            )
     )
-
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
