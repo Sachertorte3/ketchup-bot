@@ -61,8 +61,10 @@ def on_postback(line_event):
 def make_select_message():
     questions = {}
     with open('questions.txt') as f:
-        line = f.readlines()
-        questions[line.split(',')[0]] = line.split(',')[1]
+        lines = f.readlines()
+        questions = {}
+        for line in lines:
+            questions[line.split(',')[0]] = line.split(',')[1]
         return TemplateSendMessage(
             alt_text="選択肢",
             template=ButtonsTemplate(
