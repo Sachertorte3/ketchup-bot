@@ -87,7 +87,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    ret_msg += "ケチャップ画像を送って欲しいぜ"
+    ret_msg = "ケチャップ画像を送って欲しいぜ"
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
@@ -98,9 +98,9 @@ def handle_message(event):
     res = random.randint(0,1)
 
     if res == 0:
-        ret_msg += "大丈夫、まだイケるって"
+        ret_msg = "大丈夫、まだイケるって"
     elif res == 1:
-        ret_msg += "残念ですが、そのケチャップはもう空っぽですね\nhttps://www.amazon.co.jp/-/en/2803/dp/B00H2DC9MU\n新しいのを買いましょう！"
+        ret_msg = "残念ですが、そのケチャップはもう空っぽですね\nhttps://www.amazon.co.jp/-/en/2803/dp/B00H2DC9MU\n新しいのを買いましょう！"
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
