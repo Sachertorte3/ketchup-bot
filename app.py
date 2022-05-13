@@ -87,24 +87,7 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
-    if msg not in ["ぐー", "ちょき", "ぱー"]:
-        line_bot_api.reply_message(
-            event.reply_token, TextSendMessage(text="「ぐー」, 「ちょき」, 「ぱー」のいずれかで答えてね！")
-        )
-        return
-
-    # 勝敗を決める処理
-    user_hand = hand_str2id(msg)
-    bot_hand = random.randint(1, 3)  # [1, 3]
-    ret_msg = f"{hand_id2str(bot_hand)} !!\n"
-    res = game_janken(bot_hand, user_hand)
-
-    if res == DRAW:
-        ret_msg += "あーいこーで ..."
-    elif res == USER1_WIN:
-        ret_msg += "僕の勝ち！！"
-    elif res == USER2_WIN:
-        ret_msg += "君の勝ち！！"
+    ret_msg += "ケチャップ画像を送って欲しいぜ"
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
