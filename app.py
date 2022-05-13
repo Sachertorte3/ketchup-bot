@@ -47,9 +47,9 @@ def handle_message(event):
     msg = event.message.text
     if msg == "よくある質問":
         line_bot_api.reply_message(event.reply_token, make_select_message())
-    ret_msg = "ケチャップ画像を送って欲しいぜ"
-
-    line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
+    else:
+        ret_msg = "ケチャップ画像を送って欲しいぜ"
+        line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
 
 @handler.add(PostbackEvent)
 def on_postback(line_event):
