@@ -54,34 +54,36 @@ def handle_message(event):
 @handler.add(PostbackEvent)
 def on_postback(line_event):
     data = line_event.postback.data
-    with open('test.txt') as f:
-        s = f.read()
-    line_bot_api.reply_message(line_event.reply_token, TextSendMessage(f"{data}を選択しましたね！{s}"))
+    
+    line_bot_api.reply_message(line_event.reply_token, TextSendMessage(f"{data}を選択しましたね！"))
+
 
 def make_select_message():
-    return TemplateSendMessage(
-        alt_text="選択肢",
-        template=ButtonsTemplate(
-            title="よくある質問",
-            text="下から1つ選んでね！",
-            actions=[
-                {
-                    "type": "postback",
-                    "data": "morning",
-                    "label": "朝"
-                },
-                {
-                    "type": "postback",
-                    "data": "noon",
-                    "label": "昼"
-                },
-                {
-                    "type": "postback",
-                    "data": "night",
-                    "label": "夜"
-                }
-            ]
-        )
+    with open('test.txt') as f:
+        s = f.read()
+        return TemplateSendMessage(
+            alt_text="選択肢",
+            template=ButtonsTemplate(
+                title="よくある質問",
+                text="下から1つ選んでね！",
+                actions=[
+                    {
+                        "type": "postback",
+                        "data": "morning",
+                        "label": s
+                    },
+                    {
+                        "type": "postback",
+                        "data": "noon",
+                        "label": "昼"
+                    },
+                    {
+                        "type": "postback",
+                        "data": "night",
+                        "label": "夜"
+                    }
+                ]
+            )
     )
 
 @handler.add(MessageEvent, message=ImageMessage)
