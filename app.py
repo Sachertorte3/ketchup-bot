@@ -70,8 +70,8 @@ def make_select_message():
                 text="下から該当するものを選んでください。",
                 actions=[{
                         "type": "postback",
-                        "data": questions_A,
-                        "label": questions_Q} for questions_Q, questions_A in questions.items()
+                        "data": question_A,
+                        "label": "SA"} for question_Q, question_A in questions.items()
                 ]
             )
     )
