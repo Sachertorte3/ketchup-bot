@@ -8,60 +8,18 @@ from linebot.models import (
     TextMessage,
     ImageMessage,
     TextSendMessage,
+    TemplateSendMessage,
+    ButtonsTemplate,
+    PostbackEvent
 )
 
 app = Flask(__name__)
-
-# じゃんけん処理に使用
-DRAW = 0
-USER1_WIN = 1
-USER2_WIN = 2
 
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
 
 line_bot_api = LineBotApi(YOUR_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(YOUR_CHANNEL_SECRET)
-
-# 1 -> グー , 2 -> チョキ, 3 -> パー
-def game_janken(user1, user2):
-    # IDで受け取る。
-    if user1 not in [1, 2, 3] or user2 not in [1, 2, 3]:
-        raise Exception("game_janken() failure: invalid params")
-
-    if user1 == user2:
-        return DRAW
-    elif (
-        (user1 == 1 and user2 == 2)
-        or (user1 == 2 and user2 == 3)
-        or (user1 == 3 and user2 == 1)
-    ):
-        return USER1_WIN
-    else:
-        return USER2_WIN
-
-
-def hand_id2str(hand_id):
-    if hand_id == 1:
-        return "ぐー"
-    elif hand_id == 2:
-        return "ちょき"
-    elif hand_id == 3:
-        return "ぱー"
-
-    raise Exception("handid2str() failure: 不正な入力値です")
-
-
-def hand_str2id(hand_str):
-    if hand_str == "ぐー":
-        return 1
-    elif hand_str == "ちょき":
-        return 2
-    elif hand_str == "ぱー":
-        return 3
-
-    raise Exception("hand_str2id() failure: 不正な入力値です")
-
 
 @app.route("/callback", methods=["POST"])
 def callback():
@@ -87,9 +45,42 @@ def callback():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     msg = event.message.text
+    if msg == "よくある質問":
+        line_bot_api.reply_message(event.reply_token, make_select_message())
     ret_msg = "ケチャップ画像を送って欲しいぜ"
 
     line_bot_api.reply_message(event.reply_token, TextSendMessage(text=ret_msg))
+
+@handler.add(PostbackEvent)
+def on_postback(line_event):
+    data = line_event.postback.data
+    line_bot_api.reply_message(line_event.reply_token, TextSendMessage("{0}を選択しましたね！".format(data)))
+
+def make_select_message():
+    return TemplateSendMessage(
+        alt_text="選択肢",
+        template=ButtonsTemplate(
+            title="選択肢のテスト",
+            text="下から1つ選んでね！",
+            actions=[
+                {
+                    "type": "postback",
+                    "data": "morning",
+                    "label": "朝"
+                },
+                {
+                    "type": "postback",
+                    "data": "noon",
+                    "label": "昼"
+                },
+                {
+                    "type": "postback",
+                    "data": "night",
+                    "label": "夜"
+                }
+            ]
+        )
+    )
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
