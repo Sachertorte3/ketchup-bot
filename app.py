@@ -62,8 +62,9 @@ def make_select_message():
     questions = {}
     with open('questions.txt') as f:
         lines = f.readlines()
+        random_lines = random.sample(lines, 4)
         questions = {}
-        for line in lines:
+        for line in random_lines:
             questions[line.split(',')[0]] = line.split(',')[1]
         return TemplateSendMessage(
             alt_text="選択肢",
