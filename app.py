@@ -54,13 +54,15 @@ def handle_message(event):
 @handler.add(PostbackEvent)
 def on_postback(line_event):
     data = line_event.postback.data
-    line_bot_api.reply_message(line_event.reply_token, TextSendMessage("{0}を選択しましたね！".format(data)))
+    with open('test.txt') as f:
+        s = f.read()
+    line_bot_api.reply_message(line_event.reply_token, TextSendMessage(f"{data}を選択しましたね！{s}"))
 
 def make_select_message():
     return TemplateSendMessage(
         alt_text="選択肢",
         template=ButtonsTemplate(
-            title="選択肢のテスト",
+            title="よくある質問",
             text="下から1つ選んでね！",
             actions=[
                 {
