@@ -74,7 +74,7 @@ def make_select_message():
             template=ButtonsTemplate(
                 title="よくある質問",
                 text="下から該当するものを選んでください。",
-                actions=[{"type": "postback", "data": f"Q:{question_Q}\nA:{question_A}", "label": question_Q}
+                actions=[{"type": "postback", "data": f"Q:{question_Q}\nA:{question_A}" - "\n", "label": question_Q}
                          for question_Q, question_A in questions.items()]
             )
         )
