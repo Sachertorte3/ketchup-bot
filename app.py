@@ -64,9 +64,9 @@ def on_postback(line_event):
 
 
 def make_select_message():
-    questions = {}
-    with open('questions.txt') as f:
+    with open('questions.txt', encoding="utf-8") as f:
         lines = f.readlines()
+        questions = {}
         for line in lines:
             questions[line.split(',')[0]] = line.split(',')[1]
         return TemplateSendMessage(
@@ -78,7 +78,6 @@ def make_select_message():
                          for question_Q, question_A in questions.items()]
             )
         )
-
 
 @handler.add(MessageEvent, message=ImageMessage)
 def handle_message(event):
