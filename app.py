@@ -60,14 +60,15 @@ def on_postback(line_event):
     data = line_event.postback.data
 
     line_bot_api.reply_message(
-        line_event.reply_token, TextSendMessage(f"{data}を選択しましたね！"))
+        line_event.reply_token, TextSendMessage(f"{data}"))
 
 
 def make_select_message():
     questions = {}
     with open('questions.txt') as f:
-        line = f.readline()
-        questions[line.split(',')[0]] = line.split(',')[1]
+        lines = f.readlines()
+        for line in lines:
+            questions[line.split(',')[0]] = line.split(',')[1]
         return TemplateSendMessage(
             alt_text="選択肢",
             template=ButtonsTemplate(
